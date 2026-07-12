@@ -1,0 +1,40 @@
+{{ define "main" }}
+<main id="main-content" class="nm-page">
+  <article>
+    {{ partial "breadcrumbs.html" . }}
+    <h1>{{ .Title }}</h1>
+
+    <p class="nm-pub-meta">
+      {{ $authors := .Params.authors | default slice }}
+      {{ $n := len $authors }}
+      {{ range $i, $a := $authors }}{{ if and (gt $n 1) (eq $i (sub $n 1)) (not $.Params.et_al) }} and {{ else if gt $i 0 }}, {{ end }}{{ if eq $a "Neil Malhotra" }}<span class="nm-owner">{{ $a }}</span>{{ else }}{{ $a }}{{ end }}{{ end }}{{ if .Params.et_al }}, et al.{{ end }}{{ if .Params.editor }} (editor){{ end }}
+      &middot; {{ .Date.Format "2006" }}
+    </p>
+    <p class="nm-pub-meta">
+      {{ if in (.Params.publication_types | default slice) "book" }}
+        <span class="nm-pub-venue">{{ .Params.publisher }}</span>
+      {{ else }}
+        <span class="nm-pub-venue">{{ .Params.journal }}</span>{{ with .Params.volume }} {{ . }}{{ end }}{{ with .Params.number }}({{ . }}){{ end }}{{ with .Params.pages }}: {{ . }}{{ end }}
+      {{ end }}
+    </p>
+
+    {{ with .Resources.GetMatch "featured.*" }}
+      <div class="nm-featured-img">
+        <img src="{{ .RelPermalink }}" alt="Cover of {{ $.Title }}" width="{{ .Width }}" height="{{ .Height }}" />
+      </div>
+    {{ end }}
+
+    {{ with .Params.links }}
+      <div class="nm-pub-links">
+        {{ range . }}
+          <a class="nm-btn" href="{{ .url }}" rel="noopener">{{ .name }}</a>
+        {{ end }}
+      </div>
+    {{ end }}
+
+    {{ with .Content }}<div class="nm-prose">{{ . }}</div>{{ end }}
+
+    {{ partial "related_finder.html" . }}
+  </article>
+</main>
+{{ end }}

@@ -1,0 +1,58 @@
+{
+  "areas": [
+    {
+      "slug": "business-and-society",
+      "name": "Business and Society",
+      "description": "How businesses, executives, and economic elites engage with politics, regulation, and ethics.",
+      "publications": [
+        "leading-with-values",
+        "private-regulation-public-regulation",
+        "technology-entrepreneurs",
+        "economic-explanations-for-opposition-to-immigration"
+      ]
+    },
+    {
+      "slug": "political-polarization",
+      "name": "Political Polarization",
+      "description": "The origins and consequences of partisan animosity in American politics and everyday life.",
+      "publications": [
+        "affective-polarization",
+        "political-homophily",
+        "media-coverage-partisan-polarization",
+        "economic-consequences-of-partisanship"
+      ]
+    },
+    {
+      "slug": "social-media-politics",
+      "name": "Social Media and Politics",
+      "description": "Large-scale field experiments on how social media platforms shape political attitudes and behavior, from the U.S. 2020 Facebook and Instagram Election Study.",
+      "publications": [
+        "social-media-feed-algorithms",
+        "like-minded-sources-on-facebook",
+        "asymmetric-ideological-segregation",
+        "reshares-on-social-media"
+      ]
+    },
+    {
+      "slug": "survey-methodology",
+      "name": "Survey Methodology",
+      "description": "Measurement, sampling, and design in public opinion research.",
+      "publications": [
+        "completion-time-and-response-order",
+        "survey-mode-and-sampling",
+        "post-hoc-weighting"
+      ]
+    },
+    {
+      "slug": "retrospective-voting",
+      "name": "Retrospective Voting",
+      "description": "How voters reward and punish governments for events and policy, including natural disasters.",
+      "publications": [
+        "retrospective-voting-reconsidered",
+        "myopic-voters-and-natural-disaster-policy",
+        "irrelevant-events",
+        "attributing-blame-hurricane-katrina"
+      ]
+    }
+  ]
+}

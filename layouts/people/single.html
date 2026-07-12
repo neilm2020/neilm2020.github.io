@@ -1,0 +1,43 @@
+{{ define "main" }}
+<main id="main-content" class="nm-page">
+  <article>
+    {{ partial "breadcrumbs.html" . }}
+    <h1>{{ .Title }}</h1>
+    <div class="nm-prose">
+      {{ .Content }}
+    </div>
+
+    {{/* Co-author names collected from every publication's authors list (owner excluded),
+         alphabetized by last name. Links come from data/coauthors.json.
+         NOTE FOR THE OWNER: these links were resolved by web search during the initial
+         build and may be wrong or go stale — please review data/coauthors.json. */}}
+    {{ $owner := "Neil Malhotra" }}
+    {{ $names := slice }}
+    {{ range where site.RegularPages "Section" "publication" }}
+      {{ range (.Params.authors | default slice) }}
+        {{ if and (ne . $owner) (not (in $names .)) }}
+          {{ $names = $names | append . }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    {{ $withKeys := slice }}
+    {{ range $names }}
+      {{ $parts := split . " " }}
+      {{ $last := index $parts (sub (len $parts) 1) }}
+      {{ $withKeys = $withKeys | append (dict "name" . "key" $last) }}
+    {{ end }}
+    <ul class="nm-people-list">
+      {{ range sort $withKeys "key" }}
+        {{ $entry := index site.Data.coauthors .name }}
+        <li>
+          {{ if $entry }}
+            <a href="{{ $entry.url }}" rel="noopener">{{ .name }}</a>
+          {{ else }}
+            {{ .name }}
+          {{ end }}
+        </li>
+      {{ end }}
+    </ul>
+  </article>
+</main>
+{{ end }}

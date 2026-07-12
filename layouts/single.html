@@ -1,0 +1,11 @@
+{{ define "main" }}
+<main id="main-content" class="nm-page">
+  <article>
+    {{ partial "breadcrumbs.html" . }}
+    <h1>{{ .Title }}</h1>
+    <div class="nm-prose">
+      {{ .Content }}
+    </div>
+  </article>
+</main>
+{{ end }}

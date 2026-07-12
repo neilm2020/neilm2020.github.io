@@ -1,0 +1,66 @@
+{{/* Pagefind search modal. Loads the Pagefind bundle lazily on first open.
+     Falls back to a Google site: search link when the index is unavailable
+     (e.g. during `hugo server` development). Subpath-safe import via relURL. */}}
+<dialog class="nm-search-modal" id="nm-search-modal" aria-label="Search this site">
+  <div class="nm-search-head">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="align-self:center"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="search" id="nm-search-input" placeholder="{{ i18n "search_placeholder" | default "Search…" }}" autocomplete="off" />
+    <button type="button" class="nm-reset-btn" id="nm-search-close" aria-label="Close search">Esc</button>
+  </div>
+  <div class="nm-search-results" id="nm-search-results">
+    <p class="nm-search-hint">Type to search publications, pages, and people.</p>
+  </div>
+</dialog>
+<script>
+(function () {
+  var modal = document.getElementById('nm-search-modal');
+  var openBtn = document.getElementById('nm-search-open');
+  var closeBtn = document.getElementById('nm-search-close');
+  var input = document.getElementById('nm-search-input');
+  var results = document.getElementById('nm-search-results');
+  if (!modal || !openBtn) return;
+  var pagefind = null;
+  var loadFailed = false;
+
+  function openModal() {
+    if (!modal.open) modal.showModal();
+    input.focus();
+    if (!pagefind && !loadFailed) {
+      import('{{ "pagefind/pagefind.js" | relURL }}')
+        .then(function (pf) { pagefind = pf; pagefind.init(); })
+        .catch(function () {
+          loadFailed = true;
+          results.innerHTML = '<p class="nm-search-hint">Search index unavailable. <a href="https://www.google.com/search?q=site:{{ site.BaseURL | replaceRE "^https?://" "" }}" rel="noopener">Search this site on Google</a> instead.</p>';
+        });
+    }
+  }
+  function closeModal() { if (modal.open) modal.close(); }
+
+  openBtn.addEventListener('click', openModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function (e) {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); openModal(); }
+  });
+
+  var timer = null;
+  input.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      var q = input.value.trim();
+      if (!q || !pagefind) return;
+      pagefind.search(q).then(function (res) {
+        if (!res.results.length) {
+          results.innerHTML = '<p class="nm-search-hint">No results found.</p>';
+          return;
+        }
+        Promise.all(res.results.slice(0, 10).map(function (r) { return r.data(); })).then(function (items) {
+          results.innerHTML = items.map(function (d) {
+            return '<div class="nm-sr"><a href="' + d.url + '">' + d.meta.title + '</a><p>' + d.excerpt + '</p></div>';
+          }).join('');
+        });
+      });
+    }, 200);
+  });
+})();
+</script>

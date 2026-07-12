@@ -1,0 +1,12 @@
+{{/* Favicon links (custom monogram in static/) plus optional GaryKing.org/mysite
+     discovery metadata, gated by params.mysite.discovery (invisible; renders nothing
+     when disabled). */}}
+<link rel="icon" href="{{ "favicon.ico" | relURL }}" sizes="48x48" />
+{{ if site.Params.mysite.discovery | default true }}
+<meta name="generator" content="Created using GaryKing.org/mysite (https://gking.harvard.edu/mysite)">
+{{ if .IsHome }}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Neil Malhotra","affiliation":{"@type":"Organization","name":"Stanford University"},"url":"{{ site.BaseURL }}","isBasedOn":"https://gking.harvard.edu/mysite"}
+</script>
+{{ end }}
+{{ end }}

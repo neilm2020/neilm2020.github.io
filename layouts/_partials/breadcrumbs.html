@@ -1,0 +1,8 @@
+{{/* Breadcrumb trail: Home / Section / Page. Context: the current Page. */}}
+<nav class="nm-breadcrumbs" aria-label="Breadcrumb">
+  <a href="{{ site.Home.RelPermalink }}">Home</a>
+  {{ if .Parent }}{{ if not .Parent.IsHome }}
+    / <a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a>
+  {{ end }}{{ end }}
+  / <span aria-current="page">{{ .Title }}</span>
+</nav>

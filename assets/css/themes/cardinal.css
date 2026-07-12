@@ -1,0 +1,27 @@
+/* Hugo Blox color theme: CARDINAL (Stanford cardinal accent) */
+:root {
+  /* Cardinal Primary Palette */
+  --hb-primary-50-rgb: 251 243 243;
+  --hb-primary-100-rgb: 246 229 229;
+  --hb-primary-200-rgb: 235 202 202;
+  --hb-primary-300-rgb: 217 160 160;
+  --hb-primary-400-rgb: 191 106 106;
+  --hb-primary-500-rgb: 165 60 60;
+  --hb-primary-600-rgb: 140 21 21;
+  --hb-primary-700-rgb: 118 16 16;
+  --hb-primary-800-rgb: 96 14 14;
+  --hb-primary-900-rgb: 77 13 13;
+  --hb-primary-950-rgb: 44 6 6;
+  /* Warm Gray Secondary Palette */
+  --hb-secondary-50-rgb: 250 250 249;
+  --hb-secondary-100-rgb: 245 245 244;
+  --hb-secondary-200-rgb: 231 229 228;
+  --hb-secondary-300-rgb: 214 211 209;
+  --hb-secondary-400-rgb: 168 162 158;
+  --hb-secondary-500-rgb: 120 113 108;
+  --hb-secondary-600-rgb: 87 83 78;
+  --hb-secondary-700-rgb: 68 64 60;
+  --hb-secondary-800-rgb: 41 37 36;
+  --hb-secondary-900-rgb: 28 25 23;
+  --hb-secondary-950-rgb: 12 10 9;
+}

@@ -1,0 +1,22 @@
+{{/* Site footer: nav links, contact, optional mysite credit (gated by params.mysite.credit). */}}
+<footer class="nm-footer">
+  <div class="nm-footer-inner">
+    <div>
+      <strong>Neil Malhotra</strong> &middot; Graduate School of Business, Stanford University
+    </div>
+    <nav class="nm-footer-nav" aria-label="Footer navigation">
+      {{ range site.Menus.main }}
+        {{ $url := .URL }}
+        {{ if hasPrefix $url "#" }}
+          {{ $url = printf "%s%s" site.Home.RelPermalink $url }}
+        {{ else }}
+          {{ $url = relURL $url }}
+        {{ end }}
+        <a href="{{ $url }}">{{ .Name }}</a>
+      {{ end }}
+    </nav>
+    {{ if site.Params.mysite.credit | default true }}
+      <div class="nm-footer-credit">Created using <a href="https://garyking.org/mysite">GaryKing.org/mysite</a></div>
+    {{ end }}
+  </div>
+</footer>

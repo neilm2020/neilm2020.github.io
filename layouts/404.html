@@ -1,0 +1,13 @@
+{{ define "main" }}
+<main id="main-content" class="nm-container">
+  <div class="nm-404">
+    <h1>Page not found</h1>
+    <p>The page you were looking for doesn&rsquo;t exist or has moved.</p>
+    <p>
+      <a class="nm-btn" href="{{ site.Home.RelPermalink }}">Go to the homepage</a>
+      <a class="nm-btn nm-btn-outline" href="{{ "publication/" | relURL }}">Browse writings</a>
+    </p>
+    <p>Or use the search icon in the navigation bar above (Ctrl+K).</p>
+  </div>
+</main>
+{{ end }}

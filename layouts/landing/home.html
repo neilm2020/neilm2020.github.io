@@ -1,0 +1,74 @@
+{{ define "main" }}
+<main id="main-content" class="nm-container">
+
+  {{/* Hero: photo LEFT, text RIGHT (stacked and centered on mobile) */}}
+  <section class="nm-hero">
+    <div class="nm-hero-photo">
+      <img src="{{ "images/neil-malhotra.jpg" | relURL }}" alt="Portrait of Neil Malhotra, Stanford University" width="200" height="200" fetchpriority="high" />
+    </div>
+    <div class="nm-hero-text">
+      <h1>Neil Malhotra</h1>
+      <p class="nm-hero-title">Edith M. Cornell Professor of Political Economy<br />Graduate School of Business, Stanford University</p>
+      <div class="nm-hero-intro nm-prose">
+        {{ .Content }}
+      </div>
+      <div class="nm-hero-actions">
+        <a class="nm-btn" href="{{ "bio/" | relURL }}">Bio &amp; C.V.</a>
+        <a class="nm-btn nm-btn-outline" href="{{ "publication/" | relURL }}">Writings</a>
+        <a class="nm-btn nm-btn-outline" href="{{ "contact/" | relURL }}">Contact</a>
+      </div>
+    </div>
+  </section>
+
+  {{/* Books */}}
+  <section class="nm-section" id="books">
+    <h2>Books</h2>
+    <div class="nm-books">
+      {{ range sort (where (where site.RegularPages "Section" "publication") "Params.publication_types" "intersect" (slice "book")) "Params.weight" }}
+        <div class="nm-book">
+          {{ with .Resources.GetMatch "featured.*" }}
+            <div class="nm-book-cover">
+              <a href="{{ $.RelPermalink }}"><img src="{{ .RelPermalink }}" alt="Cover of {{ $.Title }}" width="{{ .Width }}" height="{{ .Height }}" loading="lazy" /></a>
+            </div>
+          {{ end }}
+          <div class="nm-book-info">
+            <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+            <p class="nm-book-meta">
+              {{ delimit (.Params.authors | default slice) ", " " and " }}{{ if .Params.editor }} (editor){{ end }} &middot; {{ .Params.publisher }}, {{ .Date.Format "2006" }}
+            </p>
+            <p class="nm-book-desc">{{ .Params.summary }}</p>
+            {{ range .Params.links }}
+              <a class="nm-btn nm-btn-outline" href="{{ .url }}" rel="noopener">{{ .name }}</a>
+            {{ end }}
+          </div>
+        </div>
+      {{ end }}
+    </div>
+  </section>
+
+  {{/* Research areas as accordions of representative articles */}}
+  <section class="nm-section" id="research-areas">
+    <h2>Research Areas</h2>
+    {{ $pubPages := where site.RegularPages "Section" "publication" }}
+    {{ range $i, $area := site.Data.research_areas.areas }}
+      <details class="nm-area"{{ if eq $i 0 }} open{{ end }}>
+        <summary>{{ $area.name }}</summary>
+        <div class="nm-area-body">
+          <p class="nm-area-desc">{{ $area.description }}</p>
+          <ul class="nm-cite-list">
+            {{ range $slug := $area.publications }}
+              {{ range $pubPages }}
+                {{ if eq (path.Base (path.Dir .File.Path)) $slug }}
+                  <li class="nm-cite">{{ partial "citation_row.html" . }}</li>
+                {{ end }}
+              {{ end }}
+            {{ end }}
+          </ul>
+          <a class="nm-area-more" href="{{ "publication/" | relURL }}#area={{ $area.slug }}">View all &rarr;</a>
+        </div>
+      </details>
+    {{ end }}
+  </section>
+
+</main>
+{{ end }}

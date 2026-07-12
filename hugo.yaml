@@ -1,0 +1,77 @@
+baseURL: "https://neilm2020.github.io/neilmalhotra.github.io/"
+title: "Neil Malhotra"
+languageCode: en-us
+enableEmoji: false
+enableRobotsTXT: true
+summaryLength: 30
+pagination:
+  pagerSize: 100
+
+module:
+  imports:
+    - path: github.com/HugoBlox/hugo-blox-builder/modules/blox-tailwind
+
+outputs:
+  home: [HTML, RSS, JSON]
+
+build:
+  writeStats: true
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    codeFences: false
+
+params:
+  appearance:
+    mode: light
+    color: cardinal
+    font: native
+    font_size: L
+  header:
+    navbar:
+      enable: true
+      show_search: true
+      logo:
+        text: "Neil Malhotra"
+  features:
+    search:
+      provider: flexsearch
+  extensions:
+    css:
+      - css/custom.css
+  mysite:
+    credit: false
+    discovery: false
+  marketing:
+    seo:
+      site_type: Person
+      local_business_type: ""
+      org_name: ""
+      description: "Neil Malhotra is the Edith M. Cornell Professor of Political Economy at the Stanford Graduate School of Business."
+
+taxonomies:
+  tag: tags
+
+menu:
+  main:
+    - name: Bio & C.V.
+      url: bio/
+      weight: 10
+    - name: Books
+      url: "#books"
+      weight: 20
+    - name: Research Areas
+      url: "#research-areas"
+      weight: 30
+    - name: Writings
+      url: publication/
+      weight: 40
+    - name: People
+      url: people/
+      weight: 50
+    - name: Contact
+      url: contact/
+      weight: 60

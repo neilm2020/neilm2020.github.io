@@ -1,0 +1,112 @@
+{{/* Automatic "See Also" cross-linking, computed at build time.
+     Priority 1: explicit front-matter overrides (related_papers, related_books, see_also).
+     Priority 2: shared research-area tag siblings.
+     Priority 3: scored backfill (+2 per title token, +1 per shared author, +2 per shared tag).
+     Cap 8 items; label by publication type; dedupe by normalized title. */}}
+{{- $page := . -}}
+{{- $stop := slice "a" "an" "and" "the" "of" "for" "in" "on" "to" "with" "by" "at" "as" "is" "are" "be" "or" "from" "into" "using" "via" "new" "not" "no" "it" "its" "we" "our" "their" "you" "your" "this" "that" "these" "those" "but" "if" "than" "then" "so" "can" "will" "would" "could" "should" "may" "might" "also" "more" "most" "some" "all" "any" "each" "every" "who" "whom" "which" "what" "when" "where" "why" "how" "about" "between" "among" "through" "over" "under" "after" "before" "upon" "across" "per" "vs" "de" "la" "les" "et" "du" "do" "does" -}}
+
+{{- $tokenize := ";" -}}
+{{- $myTokens := slice -}}
+{{- range split (lower (replaceRE `[^a-z0-9 ]` " " (lower $page.Title))) " " -}}
+  {{- if and (ge (len .) 3) (not (in $stop .)) -}}{{- $myTokens = $myTokens | append . -}}{{- end -}}
+{{- end -}}
+{{- $myAuthors := $page.Params.authors | default slice -}}
+{{- $myLastNames := slice -}}
+{{- range $myAuthors -}}
+  {{- $parts := split . " " -}}
+  {{- $myLastNames = $myLastNames | append (lower (index $parts (sub (len $parts) 1))) -}}
+{{- end -}}
+{{- $myTags := $page.Params.tags | default slice -}}
+
+{{- $results := slice -}}
+{{- $seenTitles := slice -}}
+{{- $myNorm := replaceRE `[^a-z0-9]` "" (lower $page.Title) -}}
+{{- $seenTitles = $seenTitles | append $myNorm -}}
+
+{{/* Priority 1: explicit overrides */}}
+{{- $explicit := slice -}}
+{{- range (slice "related_papers" "related_books" "related_talks" "related_software" "related_datasets") -}}
+  {{- range ($page.Param .) | default slice -}}
+    {{- $explicit = $explicit | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- with $page.Params.related_paper }}{{ $explicit = $explicit | append . }}{{ end -}}
+{{- range $explicit -}}
+  {{- $slug := . -}}
+  {{- range where site.RegularPages "Section" "publication" -}}
+    {{- if eq (path.Base (path.Dir .File.Path)) $slug -}}
+      {{- $norm := replaceRE `[^a-z0-9]` "" (lower .Title) -}}
+      {{- if not (in $seenTitles $norm) -}}
+        {{- $results = $results | append (dict "page" . "score" 1000) -}}
+        {{- $seenTitles = $seenTitles | append $norm -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* Priority 2: research-area siblings from data/research_areas.json always qualify */}}
+{{- $mySlug := path.Base (path.Dir $page.File.Path) -}}
+{{- $myAreaSlugs := slice -}}
+{{- range site.Data.research_areas.areas -}}
+  {{- if in .publications $mySlug -}}{{- $myAreaSlugs = $myAreaSlugs | append .slug -}}{{- end -}}
+{{- end -}}
+
+{{/* Priority 3 scoring across all publications */}}
+{{- $candidates := slice -}}
+{{- range where site.RegularPages "Section" "publication" -}}
+  {{- if ne .Permalink $page.Permalink -}}
+    {{- $norm := replaceRE `[^a-z0-9]` "" (lower .Title) -}}
+    {{- if not (in $seenTitles $norm) -}}
+      {{- $score := 0 -}}
+      {{- $theirSlug := path.Base (path.Dir .File.Path) -}}
+      {{- range site.Data.research_areas.areas -}}
+        {{- if and (in $myAreaSlugs .slug) (in .publications $theirSlug) -}}{{- $score = add $score 100 -}}{{- end -}}
+      {{- end -}}
+      {{- $theirTokens := slice -}}
+      {{- range split (lower (replaceRE `[^a-z0-9 ]` " " (lower .Title))) " " -}}
+        {{- if and (ge (len .) 3) (not (in $stop .)) -}}{{- $theirTokens = $theirTokens | append . -}}{{- end -}}
+      {{- end -}}
+      {{- range $myTokens -}}
+        {{- if in $theirTokens . -}}{{- $score = add $score 2 -}}{{- end -}}
+      {{- end -}}
+      {{- range (.Params.authors | default slice) -}}
+        {{- $parts := split . " " -}}
+        {{- $ln := lower (index $parts (sub (len $parts) 1)) -}}
+        {{- if in $myLastNames $ln -}}{{- $score = add $score 1 -}}{{- end -}}
+      {{- end -}}
+      {{- range (.Params.tags | default slice) -}}
+        {{- if in $myTags . -}}{{- $score = add $score 2 -}}{{- end -}}
+      {{- end -}}
+      {{- if ge $score 4 -}}
+        {{- $candidates = $candidates | append (dict "page" . "score" $score) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $candidates = sort $candidates "score" "desc" -}}
+{{- range $candidates -}}
+  {{- $norm := replaceRE `[^a-z0-9]` "" (lower .page.Title) -}}
+  {{- if and (lt (len $results) 8) (not (in $seenTitles $norm)) -}}
+    {{- $results = $results | append . -}}
+    {{- $seenTitles = $seenTitles | append $norm -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $external := $page.Params.see_also | default slice -}}
+{{- if or (gt (len $results) 0) (gt (len $external) 0) }}
+<section class="gk-see-also" aria-label="Related work">
+  <h2>{{ i18n "see_also" | default "See Also" }}</h2>
+  <ul>
+    {{- range first 8 $results }}
+      {{- $ptypes := .page.Params.publication_types | default slice -}}
+      {{- $kind := "Paper" -}}
+      {{- if in $ptypes "book" }}{{ $kind = "Book" }}{{ else if in $ptypes "data" }}{{ $kind = "Dataset" }}{{ else if in $ptypes "software" }}{{ $kind = "Software" }}{{ else if in $ptypes "presentation" }}{{ $kind = "Presentation" }}{{ end }}
+      <li><span class="kind">{{ $kind }}</span><a href="{{ .page.RelPermalink }}">{{ .page.Title }}</a> <span class="nm-cite-year">({{ .page.Date.Format "2006" }})</span></li>
+    {{- end }}
+    {{- range $external }}
+      <li><span class="kind">Link</span><a href="{{ .url }}" rel="noopener">{{ .title }}</a></li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}
