@@ -53,6 +53,17 @@
         "irrelevant-events",
         "attributing-blame-hurricane-katrina"
       ]
+    },
+    {
+      "slug": "publication-bias",
+      "name": "Publication Bias",
+      "description": "How publication and reporting practices shape the published scientific record, and efforts to promote research transparency.",
+      "publications": [
+        "unlocking-the-file-drawer",
+        "promoting-an-open-research-culture",
+        "statistical-reporting-standards",
+        "underreporting-in-psychology-experiments"
+      ]
     }
   ]
 }

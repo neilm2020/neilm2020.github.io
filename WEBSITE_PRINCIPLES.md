@@ -38,7 +38,7 @@ The site is forced light mode. A custom Hugo Blox color theme lives at
   C.V. cites them), `editor` (renders "(editor)"), `journal`, `volume`,
   `number`, `pages`, `publisher` (books), `doi`, `links`, `tags`.
 - `tags` carry the research-area name; `data/research_areas.json` maps each of
-  the five areas to its featured publication slugs. The homepage accordions
+  the six areas to its featured publication slugs. The homepage accordions
   read that file — a publication not listed there is only reachable through
   search and "See Also".
 - There is intentionally **no publications list page and no People page** (the

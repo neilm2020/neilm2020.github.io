@@ -42,7 +42,7 @@ and the site republishes itself automatically a minute or two after every change
    links:
      - name: "Publisher's Version"
        url: "https://doi.org/10.xxxx/xxxxx"
-   tags: ["Political Polarization"]   # one of the five research-area names
+   tags: ["Political Polarization"]   # one of the six research-area names
    ---
    ```
 

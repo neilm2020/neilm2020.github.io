@@ -12,7 +12,7 @@
     {{- else if gt $i 0 }}, {{ end -}}
     {{- if eq $a "Neil Malhotra" }}<span class="nm-owner">{{ $a }}</span>{{ else }}{{ $a }}{{ end -}}
   {{- end -}}
-  {{- if $p.Params.et_al }}, et al.{{ end -}}
+  {{- if $p.Params.et_al }}, et al{{ end -}}
   {{- if $p.Params.editor }} (editor){{ end -}}
 </span><span class="nm-cite-year">. {{ $p.Date.Format "2006" }}.</span>
 {{- if $isBook }}
