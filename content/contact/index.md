@@ -1,12 +1,10 @@
 ---
 title: "Contact"
 ---
-**Neil Malhotra**
-Graduate School of Business
-Stanford University
-655 Knight Way
+**Neil Malhotra**<br>
+Graduate School of Business<br>
+Stanford University<br>
+655 Knight Way<br>
 Stanford, CA 94305-7298
 
-Email: [neilm@stanford.edu](mailto:neilm@stanford.edu)
-
-Phone: (408) 772-7969
+Email: neilm (at) stanford (dot) edu

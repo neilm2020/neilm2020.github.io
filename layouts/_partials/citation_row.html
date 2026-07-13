@@ -18,7 +18,7 @@
 {{- if $isBook }}
 <span class="nm-cite-title nm-cite-venue"><a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a></span>. {{ with $p.Params.publisher }}{{ . }}.{{ end }}
 {{- else }}
-{{- $endsPunct := findRE `[?!]$` $p.Title -}}
+{{ $endsPunct := findRE `[?!]$` $p.Title }}
 <span class="nm-cite-title">&ldquo;<a href="{{ $p.RelPermalink }}">{{ $p.Title }}</a>{{ if not $endsPunct }}.{{ end }}&rdquo;</span>
 <span class="nm-cite-venue">{{ $p.Params.journal }}</span>
 {{- with $p.Params.volume }} {{ . }}{{ end }}{{ with $p.Params.number }}({{ . }}){{ end }}{{ with $p.Params.pages }}: {{ . }}{{ end }}.

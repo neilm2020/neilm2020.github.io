@@ -14,7 +14,6 @@
       </div>
       <div class="nm-hero-actions">
         <a class="nm-btn" href="{{ "bio/" | relURL }}">Bio &amp; C.V.</a>
-        <a class="nm-btn nm-btn-outline" href="{{ "publication/" | relURL }}">Writings</a>
         <a class="nm-btn nm-btn-outline" href="{{ "contact/" | relURL }}">Contact</a>
       </div>
     </div>
@@ -49,6 +48,7 @@
   {{/* Research areas as accordions of representative articles */}}
   <section class="nm-section" id="research-areas">
     <h2>Research Areas</h2>
+    <p class="nm-section-sub">Representative Publications</p>
     {{ $pubPages := where site.RegularPages "Section" "publication" }}
     {{ range $i, $area := site.Data.research_areas.areas }}
       <details class="nm-area"{{ if eq $i 0 }} open{{ end }}>
@@ -64,7 +64,6 @@
               {{ end }}
             {{ end }}
           </ul>
-          <a class="nm-area-more" href="{{ "publication/" | relURL }}#area={{ $area.slug }}">View all &rarr;</a>
         </div>
       </details>
     {{ end }}

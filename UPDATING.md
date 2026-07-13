@@ -12,6 +12,9 @@ and the site republishes itself automatically a minute or two after every change
   and republishes the site automatically. You never need to "deploy" anything.
 - To edit any file on GitHub.com: navigate to the file, click the pencil icon,
   make your change, and click **Commit changes**.
+- The site shows a curated set of representative publications inside the
+  Research Areas accordions on the homepage (there is no separate all-publications
+  page — the complete list lives in the C.V. PDF).
 
 ## Add a new article
 
@@ -43,18 +46,18 @@ and the site republishes itself automatically a minute or two after every change
    ---
    ```
 
-5. To feature it in a research-area accordion on the homepage, add its folder
-   name to that area's `publications` list in `data/research_areas.json`.
-
-The Writings page, homepage accordions, People page, and "See Also" links all
-update themselves from these files — there is nothing else to edit.
+5. **Important:** to make the article appear in a research-area accordion on
+   the homepage, add its folder name to that area's `publications` list in
+   `data/research_areas.json`. An article not listed there is only reachable
+   through site search and "See Also" links.
 
 ## Add a new book
 
 Same as an article, but use `publication_types: ["book"]` and a `publisher:`
 line instead of `journal`/`volume`/`pages`. To show a cover, upload the cover
 image into the same folder named `featured.jpg`. Books automatically appear in
-the Books section of the homepage.
+the Books section of the homepage (ordering is controlled by the `weight:`
+field — lower numbers first).
 
 ## Update the bio or contact info
 
@@ -70,16 +73,6 @@ Upload the new PDF over `static/files/cv.pdf` (same name).
 ## Replace the photo
 
 Upload a square photo over `static/images/neil-malhotra.jpg` (same name).
-
-## The People page — please review it
-
-The People page is **auto-populated from the co-authors listed on the
-publications**, and each person's link was **guessed by web search** during the
-initial build. Some links may point to the wrong person or go stale. Please
-review `data/coauthors.json` and fix or remove any wrong URL. Names without an
-entry in that file appear unlinked, which is always safe. Three co-authors
-currently have no link (no page could be verified): Gregory Ferenstein,
-Christopher McConnell, and Annie Franco.
 
 ## Footer credit and directory listing
 

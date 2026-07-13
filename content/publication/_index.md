@@ -1,4 +1,6 @@
 ---
-title: "Writings"
+title: "Publications"
+build:
+  render: never
+  list: local
 ---
-Representative books and articles across five research areas. A complete list of publications appears in the [C.V.](../bio/)

@@ -38,8 +38,13 @@ The site is forced light mode. A custom Hugo Blox color theme lives at
   C.V. cites them), `editor` (renders "(editor)"), `journal`, `volume`,
   `number`, `pages`, `publisher` (books), `doi`, `links`, `tags`.
 - `tags` carry the research-area name; `data/research_areas.json` maps each of
-  the five areas to its featured publication slugs. The homepage accordions and
-  the Writings page's area filter both read that file.
+  the five areas to its featured publication slugs. The homepage accordions
+  read that file — a publication not listed there is only reachable through
+  search and "See Also".
+- There is intentionally **no publications list page and no People page** (the
+  owner asked for both to be removed on 2026-07-12). `content/publication/_index.md`
+  has `build.render: never`; individual publication pages still render and are
+  linked from the homepage accordions.
 - Books use `publication_types: ["book"]` and a `featured.jpg` cover in the
   bundle (auto-discovered by templates).
 - The site intentionally features only representative works (per the owner's
@@ -49,10 +54,8 @@ The site is forced light mode. A custom Hugo Blox color theme lives at
 
 | File | Role |
 |------|------|
-| `home.html` | Hero (photo left / text right, stacked on mobile) + Books + research-area accordions (`<details>`, no JS). Anchors `#books`, `#research-areas` have `scroll-margin-top`. |
-| `publication/list.html` | The Writings page: server-rendered citation rows + vanilla-JS tabs (All/Articles/Books), text search, area dropdown, year checkboxes, sort, live count, BibTeX download of visible rows, hash routing (`#book`, `#area=<slug>`). |
+| `landing/home.html` | Hero (photo left / text right, stacked on mobile) + Books + research-area accordions (`<details>`, no JS) with a "Representative Publications" subtitle. Anchors `#books`, `#research-areas` have `scroll-margin-top`. |
 | `publication/single.html` | Citation header, cover, link buttons, See Also. Publication-type labels are deliberately not shown. |
-| `people/single.html` | Auto-collects co-authors from all `authors:` fields (owner excluded), alphabetizes by last name, links via `data/coauthors.json`. Names-only presentation (solo researcher, no lab). |
 | `_partials/citation_row.html` | Single source of the dense citation line (owner's name bolded; books italic + publisher, articles quoted + journal). |
 | `_partials/related_finder.html` | Build-time "See Also": explicit `related_*` overrides win, then scoring (+2 shared title token, +1 shared author last name, +2 shared tag), threshold 4, cap 8, title-dedup. |
 | `_partials/components/headers/navbar.html` | Brand = owner's name (links home), nav right, search = icon only, CSS-checkbox hamburger on mobile. |
@@ -76,8 +79,7 @@ even if the repo is renamed or moved to a user site.
 - Don't show `publication_types` labels on publication pages.
 - Don't add process/sourcing commentary to any rendered text — flags go in
   HTML comments.
-- Don't hand-maintain related links or the co-author list; they are computed.
-  (Exception: `data/coauthors.json` URLs are hand-curated — verify before adding.)
+- Don't hand-maintain related links; they are computed at build time.
 - Don't bypass the theme override convention: copy from
   `_vendor/.../layouts/_partials/<path>` to `layouts/_partials/<path>` and edit
   the copy.
@@ -87,7 +89,8 @@ even if the repo is renamed or moved to a user site.
 - The information form described González-Bailón et al. (2023) as a *Nature*
   article; it appeared in *Science* (verified via Crossref and the C.V.). The
   site links the Science DOI; a comment sits in that page's Markdown.
-- Co-author links in `data/coauthors.json` were resolved by web search and
-  should be reviewed by the owner (see UPDATING.md). Ferenstein, McConnell,
-  and Franco are unlinked (no page could be verified).
 - The old site's bio contained the typo "Rosenbrg", fixed to "Rosenberg" here.
+- 2026-07-12 owner revisions: removed the Writings list page and the People
+  page, dropped the phone number from Contact, obfuscated the email address,
+  replaced the C.V. PDF, and added the "Representative Publications" subtitle
+  under Research Areas.
